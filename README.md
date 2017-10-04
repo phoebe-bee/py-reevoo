@@ -3,37 +3,71 @@ A Python library for the Reevoo API. Made with the help of the [Reevoo API docs]
 
 ## Methods
 
-Method arguments with default values are optional and will default to `None` or `False`, all others are mandatory.
-
-+ `__init__(api_key, api_secret)`
++ ###`__init__(api_key, api_secret)`
 
 Set the credentials to query the API
 
-+ `get_organisation_list()`
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `api_key` | mandatory | String |
+| `api_secret` | mandatory | String |
+
+
++ ###`get_organisation_list()`
 
 Allows a user to retrieve information for all organisations associated with their API key
 
-+ `get_organisation_detail(self, trkref, branch_code)`
++ ###`get_organisation_detail(self, trkref, branch_code)`
 
 Allows a user to retrieve information for a specific organisation assigned to their API key
 
-+ `get_reviewable_list(self, trkref, branch_code, short_format, skus)`
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `branch_code` | optional | String | `None` |
+
++ ###`get_reviewable_list(self, trkref, branch_code, short_format, skus)`
 
 Returns a list of reviewables (products) for the given organisation. If short_format is True, any organisation
 may request the reviewables (although short data contains only the SKU, review count and the average score).
 
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `branch_code` | optional | String | `None` |
+| `short_format` | optional | Boolean | `False` |
+| `branch_code` | optional | String | `None` |
 
-+ `get_reviewable_detail(self, trkref, branch_code, locale, sku, short_format)`
++ ###`get_reviewable_detail(self, trkref, branch_code, locale, sku, short_format)`
 
 Return the details of a single reviewable (product)
 
-+ `get_review_list(self, trkref, locale, branch_code, sku, region, page, per_page, automotive_options)`
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `branch_code` | optional | String | `None` |
+| `locale` | optional | String | `None` |
+| `sku` | optional | String | `None` |
+| `short_format` | optional | Boolean | `False` |
+
++ ###`get_review_list(self, trkref, locale, branch_code, sku, region, page, per_page, automotive_options)`
 
 Returns a list of published reviews for an organisation.
 
-`per_page` has a minimum of 15 and a maximum of 30.
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `locale` | mandatory | String |  |
+| `branch_code` | optional | String | `None` |
+| `sku` | optional | String | `None` |
+| `region` | optional | String | `None` |
+| `page` | optional | Integer | `1` |
+| `per_page` | optional (min 15, max 30) | Integer | `15` |
+| `automotive_options` | optional | dict | `None` |
+
 ##### Options
 ###### Region
+Filter reviews by region by setting the `region` parameter to one of the following strings:
 
 | Value | Description |
 | --- | --- |
@@ -65,42 +99,83 @@ this options, leave the argument blank and it will default to `None`.
 | `"engine_size_in_liters"` | optional | Integer | `0.8` |
 
 
-+ `get_review_detail(self, trkref, review_id, branch_code, locale)`
++ ###`get_review_detail(self, trkref, review_id, branch_code, locale)`
 
-+ `set_review_upvote_review(self, review_id, trkref)`
+Get the details for a single review
 
-+ `set_review_downvote_review(self, review_id, trkref)`
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `review_id` | optional | String | `False` |
+| `branch_code` | optional | String | `None` |
+| `locale` | optional | String | `None` |
 
-+ `get_customer_experience_review_list(self, trkref, branch_code, older_reviews)`
++ ###`set_review_upvote_review(self, review_id, trkref)`
 
-+ `get_customer_experience_review_detail(self, review_id, trkref, branch_code)`
+Increments the 'helpful' attribute of the review by 1. [IMPORTANT: The Reevoo API cannot detect the same user
+incrementing the same review repeatedly.](http://reevoo.github.io/docs/reevooapi/review/upvote-review/)
+Make sure your code prevents this.
 
-+ `get_conversation_list(self, trkref, locale, sku)`
++ ###`set_review_downvote_review(self, review_id, trkref)`
 
-+ `get_conversation_detail(self, trkref, conversation_id)`
+Decrements the 'helpful' attribute of the review by 1. [IMPORTANT: The Reevoo API cannot detect the same user
+decrementing the same review repeatedly.](http://reevoo.github.io/docs/reevooapi/review/downvote-review/)
+Make sure your code prevents this.
 
-+ `set_conversation_create(self, trkref)`
++ ###`get_customer_experience_review_list(self, trkref, branch_code, older_reviews)`
 
-+ `set_conversation_upvote_question(self, trkref, question_id)`
+Fetch a list of reviews for an organisation
 
-+ `set_conversation_downvote_question(self, trkref, question_id)`
++ ###`get_customer_experience_review_detail(self, review_id, trkref, branch_code)`
 
-+ `set_conversation_upvote_answer(self, trkref, answer_id)`
+Fetch a single review by its ID
 
-+ `set_conversation_downvote_answer(self, trkref, answer_id)`
++ ###`get_conversation_list(self, trkref, locale, sku)`
 
-+ `set_customer_order_single_submission(self, trkref, customer_order_json)`
+Returns a list of conversations associated with a certain product
 
-+ `set_customer_order_batch_submission(self, customer_order_batch_json)`
++ ###`get_conversation_detail(self, trkref, conversation_id)`
 
-+ `get_purchaser_detail(self, trkref, email)`
+Returns the details for a single conversation
 
-+ `set_purchaser_create(self, trkref, purchaser_json)`
++ ###`set_conversation_create(self, trkref, conversation_details)`
 
-+ `set_purchaser_update(self, trkref, email, purchaser_json)`
++ ###`set_conversation_upvote_question(self, trkref, question_id)`
 
-+ `get_purchaser_list(self, trkref, email)`
+Increments the 'helpful' attribute of the question by 1. [IMPORTANT: The Reevoo API cannot detect the same user
+incrementing the same question repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-upvote-question/)
+Make sure your code prevents this.
 
-+ `get_purchaser_match(self, trkref, email, purchases)`
++ ###`set_conversation_downvote_question(self, trkref, question_id)`
 
-+ `get_questionnaire_detail(self, trkref, email, sku, order_ref, first_name, redirect)`
+Decrements the 'helpful' attribute of the question by 1. [IMPORTANT: The Reevoo API cannot detect the same user
+decrementing the same question repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-downvote-question/)
+Make sure your code prevents this.
+
++ ###`set_conversation_upvote_answer(self, trkref, answer_id)`
+
+Increments the 'helpful' attribute of the answer by 1. [IMPORTANT: The Reevoo API cannot detect the same user
+incrementing the same answer repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-upvote-answer/)
+Make sure your code prevents this.
+
++ ###`set_conversation_downvote_answer(self, trkref, answer_id)`
+
+Decrements the 'helpful' attribute of the answer by 1. [IMPORTANT: The Reevoo API cannot detect the same user
+decrementing the same answer repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-downvote-answer/)
+Make sure your code prevents this.
+
++ ###`set_customer_order_single_submission(self, trkref, customer_order_json)`
+
++ ###`set_customer_order_batch_submission(self, customer_order_batch_json)`
+
++ ###`get_purchaser_detail(self, trkref, email)`
+
++ ###`set_purchaser_create(self, trkref, purchaser_json)`
+
++ ###`set_purchaser_update(self, trkref, email, purchaser_json)`
+
++ ###`get_purchaser_list(self, trkref, email)`
+
++ ###`get_purchaser_match(self, trkref, email, purchases)`
+
++ ###`get_questionnaire_detail(self, trkref, email, sku, order_ref, first_name, redirect)`

@@ -73,7 +73,7 @@ class ReevooAPI:
         """
         return
 
-    def get_review_list(self, trkref, locale, branch_code=None, sku=None, region=None, page=None, per_page=None,
+    def get_review_list(self, trkref, locale, branch_code=None, sku=None, region=None, page=1, per_page=15,
                         automotive_options=None):
         """
         Returns a list of published reviews for an organisation
@@ -197,11 +197,13 @@ class ReevooAPI:
         """
         return
 
-    def set_conversation_create(self, trkref):
+    def set_conversation_create(self, trkref, conversation):
         """
         Creates a new conversation question
         :param trkref: The three-character identifier for the organisation
         :type trkref: str
+        :param conversation: The details for the question
+        :type conversation: dict
         """
         return
 
@@ -253,23 +255,23 @@ class ReevooAPI:
         """
         return
 
-    def set_customer_order_single_submission(self, trkref, customer_order_json):
+    def set_customer_order_single_submission(self, trkref, customer_order_data):
         """
         Submit customer order details as a JSON object. See Reevoo documentation for fields to include -
         http://reevoo.github.io/docs/reevooapi/customer-order/customer-order-single-submission/
         :param trkref: The three-character identifier for the organisation
         :type trkref: str
-        :param customer_order_json: The JSON string to submit
-        :type customer_order_json: str
+        :param customer_order_data: The customer order data
+        :type customer_order_data: dict
         """
         return
 
-    def set_customer_order_batch_submission(self, customer_order_batch_json):
+    def set_customer_order_batch_submission(self, customer_order_batch_data):
         """
         Submit a batch of customer order details as a JSON list. See Reevoo documentation for fields to include -
         http://reevoo.github.io/docs/reevooapi/customer-order/customer-order-batch-submission/
-        :param customer_order_batch_json: The JSON string to submit
-        :type customer_order_batch_json: str
+        :param customer_order_batch_data: The customer order data
+        :type customer_order_batch_data: dict
         """
         return
 
@@ -283,26 +285,26 @@ class ReevooAPI:
         """
         return
 
-    def set_purchaser_create(self, trkref, purchaser_json):
+    def set_purchaser_create(self, trkref, purchaser_data):
         """
         Creates a purchaser record from a JSON string. See Reevoo documentation for fields to include -
         http://reevoo.github.io/docs/reevooapi/purchaser/purchaser-create/
         :param trkref: The three-character identifier for the organisation
         :type trkref: str
-        :param purchaser_json: The JSON string describing the purchaser
-        :type purchaser_json: str
+        :param purchaser_data: The purchaser data
+        :type purchaser_data: dict
         """
         return
 
-    def set_purchaser_update(self, trkref, email, purchaser_json):
+    def set_purchaser_update(self, trkref, email, purchaser_data):
         """
         Update a purchaser record using an email to identify the purchaser
         :param trkref: The three-character identifier for the organisation
         :type trkref: str
         :param email: The email of the customer
         :type email: str
-        :param purchaser_json: The JSON string describing the purchaser
-        :type purchaser_json: str
+        :param purchaser_data: The purchaser data
+        :type purchaser_data: dict
         """
         return
 
