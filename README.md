@@ -194,7 +194,7 @@ The dict should contain the following data.
 ### set_conversation_upvote_question(self, trkref, question_id)
 
 Increments the 'helpful' attribute of the question by 1. [IMPORTANT: The Reevoo API cannot detect the same user
-incrementing the same question repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-upvote-question/)
+incrementing the same question repeatedly.](http://reevoo.github.io/docs/reevooapi/conversation/conversation-upvote-question/)
 Make sure your code prevents this.
 
 | Argument | Requirement | Type |
@@ -205,7 +205,7 @@ Make sure your code prevents this.
 ### set_conversation_downvote_question(self, trkref, question_id)
 
 Decrements the 'helpful' attribute of the question by 1. [IMPORTANT: The Reevoo API cannot detect the same user
-decrementing the same question repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-downvote-question/)
+decrementing the same question repeatedly.](http://reevoo.github.io/docs/reevooapi/conversation/conversation-downvote-question/)
 Make sure your code prevents this.
 
 | Argument | Requirement | Type |
@@ -216,7 +216,7 @@ Make sure your code prevents this.
 ### set_conversation_upvote_answer(self, trkref, answer_id)
 
 Increments the 'helpful' attribute of the answer by 1. [IMPORTANT: The Reevoo API cannot detect the same user
-incrementing the same answer repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-upvote-answer/)
+incrementing the same answer repeatedly.](http://reevoo.github.io/docs/reevooapi/conversation/conversation-upvote-answer/)
 Make sure your code prevents this.
 
 | Argument | Requirement | Type |
@@ -227,7 +227,7 @@ Make sure your code prevents this.
 ### set_conversation_downvote_answer(self, trkref, answer_id)
 
 Decrements the 'helpful' attribute of the answer by 1. [IMPORTANT: The Reevoo API cannot detect the same user
-decrementing the same answer repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-downvote-answer/)
+decrementing the same answer repeatedly.](http://reevoo.github.io/docs/reevooapi/conversation/conversation-downvote-answer/)
 Make sure your code prevents this.
 
 | Argument | Requirement | Type |
