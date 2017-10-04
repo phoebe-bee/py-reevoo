@@ -3,7 +3,7 @@ A Python library for the Reevoo API. Made with the help of the [Reevoo API docs]
 
 ## Methods
 
-###__init__(api_key, api_secret)
+### \_\_init\_\_(api_key, api_secret)
 
 Set the credentials to query the API
 
