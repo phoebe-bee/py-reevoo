@@ -11,7 +11,7 @@ class ReevooAPI:
 
     def __init__(self, api_key=None, api_secret=None):
         """
-        Set the API URI (constant) and get the credentials to query the API
+        Set the API URI (constant) and set the credentials to query the API
         :param api_key:
         :type api_key: str
         :param api_secret:

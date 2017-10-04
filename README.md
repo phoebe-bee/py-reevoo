@@ -2,17 +2,42 @@
 A Python library for the Reevoo API. Made with the help of the [Reevoo API docs](http://reevoo.github.io/docs/reevooapi/)
 
 ## Methods
+
+Method arguments with default values are optional, all others are mandatory.
+
 `__init__(api_key, api_secret)`
+
+Set the credentials to query the API
 
 `get_organisation_list()`
 
+Allows a user to retrieve information for all organisations associated with their API key
+
 `get_organisation_detail(self, trkref, branch_code)`
+
+Allows a user to retrieve information for a specific organisation assigned to their API key
 
 `get_reviewable_list(self, trkref, branch_code, short_format, skus)`
 
+Returns a list of reviewables (products) for the given organisation. If short_format is True, any organisation
+may request the reviewables (although short data contains only the SKU, review count and the average score).
+
+
 `get_reviewable_detail(self, trkref, branch_code, locale, sku, short_format)`
 
+Return the details of a single reviewable (product)
+
 `get_review_list(self, trkref, locale, branch_code, sku, region, page, per_page, automotive_options)`
+
+Returns a list of published reviews for an organisation.
+##### Options
+###### Region
+|`"my-locale"`|Return all reviews having same locale as locale parameter|
+|`"my-locale"`|Return all reviews having same country code as locale parameter|
+|`"my-locale"`|Return all reviews having same language code as locale parameter|
+|`"english"`||
+|`"worldwide"`||
+###### Automotive Options
 
 `get_review_detail(self, trkref, review_id, branch_code, locale)`
 
