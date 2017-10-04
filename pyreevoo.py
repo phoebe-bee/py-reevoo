@@ -197,13 +197,13 @@ class ReevooAPI:
         """
         return
 
-    def set_conversation_create(self, trkref, conversation):
+    def set_conversation_create(self, trkref, conversation_data):
         """
         Creates a new conversation question
         :param trkref: The three-character identifier for the organisation
         :type trkref: str
-        :param conversation: The details for the question
-        :type conversation: dict
+        :param conversation_data: The details for the question
+        :type conversation_data: dict
         """
         return
 

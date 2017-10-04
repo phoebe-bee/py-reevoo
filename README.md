@@ -136,19 +136,50 @@ Make sure your code prevents this.
 
 Fetch a list of reviews for an organisation
 
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `branch_code` | optional | String | `None` |
+| `older_reviews` | optional | Boolean | `False` |
+
 ### get_customer_experience_review_detail(self, review_id, trkref, branch_code)
 
 Fetch a single review by its ID
+
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `review_id` | mandatory | String |  |
+| `trkref` | optional | String | `None` |
+| `branch_code` | optional | String | `None` |
 
 ### get_conversation_list(self, trkref, locale, sku)
 
 Returns a list of conversations associated with a certain product
 
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `review_id` | mandatory | String |  |
+| `locale` | optional | String | `None` |
+| `sku` | optional | String | `None` |
+
 ### get_conversation_detail(self, trkref, conversation_id)
 
 Returns the details for a single conversation
 
-### set_conversation_create(self, trkref, conversation_details)
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `review_id` | mandatory | String |  |
+| `locale` | optional | String | `None` |
+| `sku` | optional | String | `None` |
+
+### set_conversation_create(self, trkref, conversation_data)
+
+Create a new conversation question
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `conversation_data` | mandatory | String |
 
 ### set_conversation_upvote_question(self, trkref, question_id)
 
@@ -194,18 +225,80 @@ Make sure your code prevents this.
 | `trkref` | mandatory | String |
 | `answer_id` | mandatory | String |
 
-### set_customer_order_single_submission(self, trkref, customer_order_json)
+### set_customer_order_single_submission(self, trkref, customer_order_data)
 
-### set_customer_order_batch_submission(self, customer_order_batch_json)
+Submit customer order details as a JSON object.
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `customer_order_data` | mandatory | dict |
+
+### set_customer_order_batch_submission(self, customer_order_batch_data)
+
+Submit a batch of customer order details as a JSON list.
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `customer_order_batch_data` | mandatory | dict |
 
 ### get_purchaser_detail(self, trkref, email)
 
-### set_purchaser_create(self, trkref, purchaser_json)
+Returns a purchaser resource identified by a customer email.
 
-### set_purchaser_update(self, trkref, email, purchaser_json)
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `email` | mandatory | String |
+
+### set_purchaser_create(self, trkref, purchaser_data)
+
+Creates a purchaser record from a JSON string.
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `purchaser_data` | mandatory | String |
+
+### set_purchaser_update(self, trkref, email, purchaser_data)
+
+Update a purchaser record using an email to identify the purchaser
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `purchaser_data` | mandatory | String |
 
 ### get_purchaser_list(self, trkref, email)
 
+Returns a list of all purchases made by a purchaser with a given email address
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `email` | mandatory | String |
+
 ### get_purchaser_match(self, trkref, email, purchases)
 
+Returns a list of all purchases made by a purchaser with a given email address. The purchases will match the
+provided order references and SKUs.
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `email` | mandatory | String |
+| `purchases` | mandatory | String |
+
 ### get_questionnaire_detail(self, trkref, email, sku, order_ref, first_name, redirect)
+
+Returns a questionnaire state or redirects to a questionnaire if redirect=True
+
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `email` | mandatory | String |  |
+| `sku` | mandatory | String |  |
+| `order_ref` | mandatory | String |  |
+| `first_name` | optional | String | `None` |
+| `redirect` | optional | String | `None` |
