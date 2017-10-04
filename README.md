@@ -116,11 +116,21 @@ Increments the 'helpful' attribute of the review by 1. [IMPORTANT: The Reevoo AP
 incrementing the same review repeatedly.](http://reevoo.github.io/docs/reevooapi/review/upvote-review/)
 Make sure your code prevents this.
 
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `review_id` | mandatory | String |  |
+| `trkref` | optional | String | `None` |
+
 ### set_review_downvote_review(self, review_id, trkref)
 
 Decrements the 'helpful' attribute of the review by 1. [IMPORTANT: The Reevoo API cannot detect the same user
 decrementing the same review repeatedly.](http://reevoo.github.io/docs/reevooapi/review/downvote-review/)
 Make sure your code prevents this.
+
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `review_id` | mandatory | String |  |
+| `trkref` | optional | String | `None` |
 
 ### get_customer_experience_review_list(self, trkref, branch_code, older_reviews)
 
@@ -146,11 +156,21 @@ Increments the 'helpful' attribute of the question by 1. [IMPORTANT: The Reevoo 
 incrementing the same question repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-upvote-question/)
 Make sure your code prevents this.
 
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `question_id` | mandatory | String |
+
 ### set_conversation_downvote_question(self, trkref, question_id)
 
 Decrements the 'helpful' attribute of the question by 1. [IMPORTANT: The Reevoo API cannot detect the same user
 decrementing the same question repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-downvote-question/)
 Make sure your code prevents this.
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `question_id` | mandatory | String |
 
 ### set_conversation_upvote_answer(self, trkref, answer_id)
 
@@ -158,11 +178,21 @@ Increments the 'helpful' attribute of the answer by 1. [IMPORTANT: The Reevoo AP
 incrementing the same answer repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-upvote-answer/)
 Make sure your code prevents this.
 
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `answer_id` | mandatory | String |
+
 ### set_conversation_downvote_answer(self, trkref, answer_id)
 
 Decrements the 'helpful' attribute of the answer by 1. [IMPORTANT: The Reevoo API cannot detect the same user
 decrementing the same answer repeatedly.](http://reevoo.github.io/docs/reevooapi/review/conversation-downvote-answer/)
 Make sure your code prevents this.
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `answer_id` | mandatory | String |
 
 ### set_customer_order_single_submission(self, trkref, customer_order_json)
 
