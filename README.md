@@ -179,7 +179,17 @@ Create a new conversation question
 | Argument | Requirement | Type |
 | --- | --- | --- |
 | `trkref` | mandatory | String |
-| `conversation_data` | mandatory | String |
+| `conversation_data` | mandatory | dict |
+
+###### conversation_data
+The dict should contain the following data.
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `sku` | mandatory | String |
+| `first_name` | mandatory | String |
+| `email` | mandatory | String |
+| `question` | mandatory | String |
 
 ### set_conversation_upvote_question(self, trkref, question_id)
 
@@ -234,6 +244,32 @@ Submit customer order details as a JSON object.
 | `trkref` | mandatory | String |
 | `customer_order_data` | mandatory | dict |
 
+###### customer_order_data
+The dict should contain the following data.
+
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `order_ref` | mandatory | String |  |
+| `order_date` | optional | String | `None` |
+| `fulfilment_date` | optional | String | `None` |
+| `language` | optional | String | `None` |
+| `locale` | optional | String | `None` |
+| `customer` | mandatory | String |  |
+| ...`email` | mandatory | String |  |
+| ...`customer_ref` | optional | String | `None` |
+| ...`title` | optional | String | `None` |
+| ...`first_name` | optional | String | `None` |
+| ...`surname` | optional | String | `None` |
+| ...`postcode` | optional | String | `None` |
+| ...`country` | optional | String | `None` |
+| `order_items` | mandatory | Array |  |
+| ...`sku` | mandatory | String |  |
+| ...`price` | optional | String | `None` |
+| ...`currency` | optional - Use ISO4217 code | String | `None` |
+| ...`metadata` | optional | String | `None` |
+| ......`key_with_underscore` | optional | String | `None` |
+
 ### set_customer_order_batch_submission(self, customer_order_batch_data)
 
 Submit a batch of customer order details as a JSON list.
@@ -241,7 +277,10 @@ Submit a batch of customer order details as a JSON list.
 | Argument | Requirement | Type |
 | --- | --- | --- |
 | `trkref` | mandatory | String |
-| `customer_order_batch_data` | mandatory | dict |
+| `customer_order_batch_data` | mandatory | Array |
+
+###### customer_order_batch_data
+The argument should be a list of dicts as specified in `set_customer_order_submission()` | `customer_order_data`
 
 ### get_purchaser_detail(self, trkref, email)
 
@@ -261,6 +300,18 @@ Creates a purchaser record from a JSON string.
 | `trkref` | mandatory | String |
 | `purchaser_data` | mandatory | String |
 
+###### purchaser_data
+The dict should contain the following data.
+
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `email` | mandatory | String |  |
+| `title` | optional | String | `None` |
+| `first_name` | optional | String | `None` |
+| `surname` | optional | String | `None` |
+| `country` | optional | String | `None` |
+| `postcode` | optional | String | `None` |
+
 ### set_purchaser_update(self, trkref, email, purchaser_data)
 
 Update a purchaser record using an email to identify the purchaser
@@ -269,6 +320,18 @@ Update a purchaser record using an email to identify the purchaser
 | --- | --- | --- |
 | `trkref` | mandatory | String |
 | `purchaser_data` | mandatory | String |
+
+###### purchaser_data
+The dict should contain the following data.
+
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `email` | mandatory | String |  |
+| `title` | optional | String | `None` |
+| `first_name` | optional | String | `None` |
+| `surname` | optional | String | `None` |
+| `country` | optional | String | `None` |
+| `postcode` | optional | String | `None` |
 
 ### get_purchaser_list(self, trkref, email)
 
@@ -288,7 +351,15 @@ provided order references and SKUs.
 | --- | --- | --- |
 | `trkref` | mandatory | String |
 | `email` | mandatory | String |
-| `purchases` | mandatory | String |
+| `purchases` | mandatory | Array |
+
+###### purchases
+The array should contain objects with the following information:
+
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `order_ref` | mandatory | String |
+| `sku` | mandatory | String |
 
 ### get_questionnaire_detail(self, trkref, email, sku, order_ref, first_name, redirect)
 
