@@ -240,7 +240,7 @@ class ReevooAPI:
         :param sku: The SKU to find (optional, defaults to None)
         :type sku: str
         """
-        path = 'v4/organisations/%s/conversations?locale=%s&sku=%s' % (trkref, locale, sku)
+        path = '/v4/organisations/%s/conversations?locale=%s&sku=%s' % (trkref, locale, sku)
         response = self.__make_request(path, 'GET')
         return response
 
@@ -456,7 +456,6 @@ class ReevooAPI:
         :param method: GET | POST
         :type method: str
         :param data: Extra data to pass in POST requests (will be converted to JSON but should be passed as a dict)
-        :type data: dict
         :return response:
         """
         response = None
