@@ -27,6 +27,18 @@ class ReevooAPI:
         self.session = requests.Session()
         self.session.auth = auth
 
+    def verify_api_keys(self):
+        """
+        Returns True if API keys make a successful call, False if not. Use this after initialising to check if your API
+        keys are correct and usable.
+        """
+        check = self.get_organisation_list()
+        # using get_organisation_list() because it only requires the API keys to make the call, no other vars
+        if check.status_code == 200:
+            return True
+        else:
+            return False
+
     def get_organisation_list(self):
         """
         Returns a list of all organisations associated with the given API key
@@ -35,7 +47,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
-    def get_organisation_detail(self, trkref, branch_code=None):
+    def get_organisation_detail(self, trkref, branch_code=''):
         """
         Returns information for a specific organisation assigned to the given API key
         :param trkref: The three-character identifier for the organisation
@@ -47,7 +59,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
-    def get_reviewable_list(self, trkref, branch_code=None, short_format=False, skus=None):
+    def get_reviewable_list(self, trkref, branch_code='', short_format=False, skus=None):
         """
         Returns a list of reviewables (products) for the given organisation. If short_format is True, any organisation
         may request the reviewables (although short data contains only the SKU, review count and the average score).
@@ -60,7 +72,10 @@ class ReevooAPI:
         :param skus: The list of SKUs to find (optional, max length 80, defaults to None)
         :type skus: list
         """
-        skus_string = ','.join(skus)
+        if skus:
+            skus_string = ','.join(skus)
+        else:
+            skus_string = ''
         if short_format:
             path = '/v4/organisations/%s/reviewables?branch_code=%s&format=short' % (trkref, branch_code)
         else:
@@ -68,7 +83,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
-    def get_reviewable_detail(self, trkref, branch_code=None, locale=None, sku=None, short_format=False):
+    def get_reviewable_detail(self, trkref, sku='', branch_code='', locale='', short_format=False):
         """
         Return the details of a single reviewable
         :param trkref: The three-character identifier for the organisation
@@ -77,7 +92,7 @@ class ReevooAPI:
         :type branch_code: str
         :param locale: The locale (e.g. en-GB, optional, defaults to None)
         :type locale: str
-        :param sku: The SKU to find (optional, defaults to None)
+        :param sku: The SKU to find
         :type sku: str
         :param short_format: Return the short format of the list (optional, defaults to False)
         :type short_format: bool
@@ -91,7 +106,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
-    def get_review_list(self, trkref, locale, branch_code=None, sku=None, region=None, page=1, per_page=15,
+    def get_review_list(self, trkref, locale, branch_code='', sku='', region='', page=1, per_page=15,
                         automotive_options=None):
         """
         Returns a list of published reviews for an organisation
@@ -137,7 +152,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
-    def get_review_detail(self, trkref, review_id, branch_code=None, locale=None):
+    def get_review_detail(self, trkref, review_id, branch_code='', locale=''):
         """
         Get the details for a single review
         :param trkref: The three-character identifier for the organisation
@@ -153,7 +168,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
-    def set_review_upvote_review(self, review_id, trkref=None):
+    def set_review_upvote_review(self, review_id, trkref=''):
         """
         Increments the 'helpful' attribute of the review by 1
         IMPORTANT: The Reevoo API cannot detect the same user incrementing the same review repeatedly. Make sure that
@@ -167,7 +182,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'POST')
         return response
 
-    def set_review_downvote_review(self, review_id, trkref=None):
+    def set_review_downvote_review(self, review_id, trkref=''):
         """
         Decrements the 'helpful' attribute of the review by 1
         IMPORTANT: The Reevoo API cannot detect the same user decrementing the same review repeatedly. Make sure that
@@ -181,7 +196,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'POST')
         return response
 
-    def get_customer_experience_review_list(self, trkref, branch_code=None, older_reviews=False, page=1, per_page=15):
+    def get_customer_experience_review_list(self, trkref, branch_code='', older_reviews=False, page=1, per_page=15):
         """
         Fetch a list of reviews for an organisation
         :param trkref: The three-character identifier for the organisation
@@ -201,7 +216,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
-    def get_customer_experience_review_detail(self, review_id, trkref=None, branch_code=None):
+    def get_customer_experience_review_detail(self, review_id, trkref='', branch_code=''):
         """
         Fetch a single review by its ID
         :param review_id: The ID of the review to fetch
@@ -215,7 +230,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
-    def get_conversation_list(self, trkref, locale=None, sku=None):
+    def get_conversation_list(self, trkref, locale='', sku=''):
         """
         Returns a list of conversations associated with a certain product
         :param trkref: The three-character identifier for the organisation
@@ -318,7 +333,7 @@ class ReevooAPI:
         :param customer_order_data: The customer order data
         :type customer_order_data: dict
         """
-        path = '/v4/organisations/%s/customer_order' & (trkref, )
+        path = '/v4/organisations/%s/customer_order' % (trkref, )
         response = self.__make_request(path, 'POST', customer_order_data)
         return response
 
@@ -380,7 +395,7 @@ class ReevooAPI:
         :param email: The email address of the purchaser
         :type email: str
         """
-        path = '/v4/organisations/%s/purchasers/%s/purchases' & (trkref, email)
+        path = '/v4/organisations/%s/purchasers/%s/purchases' % (trkref, email)
         response = self.__make_request(path, 'GET')
         return response
 
@@ -400,7 +415,7 @@ class ReevooAPI:
         response = self.__make_request(path, 'POST', purchases)
         return response
 
-    def get_questionnaire_detail(self, trkref, email, sku, order_ref, first_name=None, redirect=False):
+    def get_questionnaire_detail(self, trkref, email, sku, order_ref, first_name='', redirect=False):
         """
         Returns a questionnaire state or redirects to a questionnaire if redirect=True
         :param trkref: The three-character identifier for the organisation
@@ -445,12 +460,13 @@ class ReevooAPI:
         :return response:
         """
         response = None
+        uri_and_path = self.__URI + path
         if method == 'GET':
-            response = self.session.get(self.__URI + path)
+            response = self.session.get(uri_and_path)
         elif method == 'POST':
             if data:
                 json_data = json.dumps(data)
-                response = self.session.post(self.__URI + path, json_data)
+                response = self.session.post(uri_and_path, json_data)
             else:
-                response = self.session.post(self.__URI + path)
+                response = self.session.post(uri_and_path)
         return response
