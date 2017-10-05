@@ -15,11 +15,11 @@ Set the credentials to query the API
 
 ### get_organisation_list()
 
-Allows a user to retrieve information for all organisations associated with their API key
+Returns a list of all organisations associated with the given API key
 
 ### get_organisation_detail(self, trkref, branch_code)
 
-Allows a user to retrieve information for a specific organisation assigned to their API key
+Returns information for a specific organisation assigned to the given API key
 
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
@@ -40,7 +40,7 @@ may request the reviewables (although short data contains only the SKU, review c
 
 ### get_reviewable_detail(self, trkref, branch_code, locale, sku, short_format)
 
-Return the details of a single reviewable (product)
+Return the details of a single reviewable
 
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
@@ -60,7 +60,7 @@ Returns a list of published reviews for an organisation.
 | `locale` | mandatory | String |  |
 | `branch_code` | optional | String | `None` |
 | `sku` | optional | String | `None` |
-| `region` | optional | String | `None` |
+| `region` | optional (see Options > Region) | String | `None` |
 | `page` | optional | Integer | `1` |
 | `per_page` | optional (min 15, max 30) | Integer | `15` |
 | `automotive_options` | optional | dict | `None` |
@@ -158,7 +158,7 @@ Returns a list of conversations associated with a certain product
 
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
-| `review_id` | mandatory | String |  |
+| `trkref` | mandatory | String |  |
 | `locale` | optional | String | `None` |
 | `sku` | optional | String | `None` |
 
@@ -166,11 +166,10 @@ Returns a list of conversations associated with a certain product
 
 Returns the details for a single conversation
 
-| Argument | Requirement | Type | Default |
-| --- | --- | --- | --- |
-| `review_id` | mandatory | String |  |
-| `locale` | optional | String | `None` |
-| `sku` | optional | String | `None` |
+| Argument | Requirement | Type |
+| --- | --- | --- |
+| `trkref` | mandatory | String |
+| `conversation_id` | mandatory | String |
 
 ### set_conversation_create(self, trkref, conversation_data)
 
@@ -272,11 +271,10 @@ The dict should contain the following data.
 
 ### set_customer_order_batch_submission(self, customer_order_batch_data)
 
-Submit a batch of customer order details as a JSON list.
+Submit a batch of customer order details as a JSON array.
 
 | Argument | Requirement | Type |
 | --- | --- | --- |
-| `trkref` | mandatory | String |
 | `customer_order_batch_data` | mandatory | Array |
 
 ###### customer_order_batch_data

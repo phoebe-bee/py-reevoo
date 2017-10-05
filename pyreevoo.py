@@ -28,13 +28,13 @@ class ReevooAPI:
 
     def get_organisation_list(self):
         """
-        Allows a user to retrieve information for all organisations associated with their API key
+        Returns a list of all organisations associated with the given API key
         """
         return
 
     def get_organisation_detail(self, trkref, branch_code=None):
         """
-        Allows a user to retrieve information for a specific organisation assigned to their API key
+        Returns information for a specific organisation assigned to the given API key
         :param trkref: The three-character identifier for the organisation
         :type trkref: str
         :param branch_code: The identifier for a branch of the organisation (optional, defaults to None)
@@ -59,7 +59,7 @@ class ReevooAPI:
 
     def get_reviewable_detail(self, trkref, branch_code=None, locale=None, sku=None, short_format=False):
         """
-        Return the details of a single reviewable (product)
+        Return the details of a single reviewable
         :param trkref: The three-character identifier for the organisation
         :type trkref: str
         :param branch_code: The identifier for a branch of the organisation (optional, defaults to None)
@@ -257,7 +257,7 @@ class ReevooAPI:
 
     def set_customer_order_single_submission(self, trkref, customer_order_data):
         """
-        Submit customer order details as a JSON object. See Reevoo documentation for fields to include -
+        Submit a dict of customer order details as a JSON object. See Reevoo documentation for fields to include -
         http://reevoo.github.io/docs/reevooapi/customer-order/customer-order-single-submission/
         :param trkref: The three-character identifier for the organisation
         :type trkref: str
