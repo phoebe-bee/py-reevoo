@@ -30,6 +30,7 @@ class ReevooAPI:
         """
         Returns a list of all organisations associated with the given API key
         """
+        path = '/v4/organisations'
         return
 
     def get_organisation_detail(self, trkref, branch_code=None):
@@ -40,6 +41,7 @@ class ReevooAPI:
         :param branch_code: The identifier for a branch of the organisation (optional, defaults to None)
         :type branch_code: str
         """
+        path = '/v4/organisations/%s' % (trkref, )
         return
 
     def get_reviewable_list(self, trkref, branch_code=None, short_format=False, skus=None):
@@ -55,6 +57,11 @@ class ReevooAPI:
         :param skus: The list of SKUs to find (optional, max length 80, defaults to None)
         :type skus: list
         """
+        skus_string = ','.join(skus)
+        if short_format:
+            path = '/v4/organisations/%s/reviewables?branch_code=%s&format=short' % (trkref, branch_code)
+        else:
+            path = '/v4/organisations/%s/reviewables?branch_code=%s&skus=%s' % (trkref, branch_code, skus_string)
         return
 
     def get_reviewable_detail(self, trkref, branch_code=None, locale=None, sku=None, short_format=False):
@@ -71,6 +78,12 @@ class ReevooAPI:
         :param short_format: Return the short format of the list (optional, defaults to False)
         :type short_format: bool
         """
+        if short_format:
+            path = '/v4/organisations/%s/reviewable?branch_code=%s&locale=%s&sku=%s&format=short' % \
+                   (trkref, branch_code, locale, sku)
+        else:
+            path = '/v4/organisations/%s/reviewable?branch_code=%s&locale=%s&sku=%s' % \
+                   (trkref, branch_code, locale, sku)
         return
 
     def get_review_list(self, trkref, locale, branch_code=None, sku=None, region=None, page=1, per_page=15,
@@ -110,6 +123,12 @@ class ReevooAPI:
                 }
         :type automotive_options: dict
         """
+        path = '/v4/organisations/%s/reviews?locale=%s&branch_code=%s&sku=%s&region=%s&page=%s&per_page=%s' % \
+               (trkref, locale, branch_code, sku, region, page, per_page)
+        if automotive_options:
+            auto_str = self.__dict_to_url_args(automotive_options)
+            path += '&'
+            path += auto_str
         return
 
     def get_review_detail(self, trkref, review_id, branch_code=None, locale=None):
@@ -124,6 +143,7 @@ class ReevooAPI:
         :param locale: The locale (e.g. en-GB, optional, defaults to None)
         :type locale: str
         """
+        path = '/v4/reviews/%s?trkref=%s&branch_code=%s&locale=%s' % (review_id, trkref, branch_code, locale)
         return
 
     def set_review_upvote_review(self, review_id, trkref=None):
@@ -136,6 +156,7 @@ class ReevooAPI:
         :param trkref: The three-character identifier for the organisation
         :type trkref: str (optional, defaults to None)
         """
+        path = '/v4/reviews/%s/increment_helpful?trkref=%s' % (review_id, trkref)
         return
 
     def set_review_downvote_review(self, review_id, trkref=None):
@@ -148,6 +169,7 @@ class ReevooAPI:
         :param trkref: The three-character identifier for the organisation
         :type trkref: str (optional, defaults to None)
         """
+        path = '/v4/reviews/%s/increment_unhelpful?trkref=%s' % (review_id, trkref)
         return
 
     def get_customer_experience_review_list(self, trkref, branch_code=None, older_reviews=False):
@@ -161,6 +183,8 @@ class ReevooAPI:
                                 (optional, defaults to False)
         :type older_reviews: bool
         """
+        path = '/v4/organisations/%s/customer_experience_reviews?branch_code=%s&older_reviews=%r' % \
+               (trkref, branch_code, older_reviews)
         return
 
     def get_customer_experience_review_detail(self, review_id, trkref=None, branch_code=None):
@@ -173,6 +197,7 @@ class ReevooAPI:
         :param branch_code: The identifier for a branch of the organisation (optional, defaults to None)
         :type branch_code: str
         """
+        path = '/v4/customer_experience_reviews/%s?trkref=%s&branch_code=%s' % (review_id, trkref, branch_code)
         return
 
     def get_conversation_list(self, trkref, locale=None, sku=None):
@@ -185,6 +210,7 @@ class ReevooAPI:
         :param sku: The SKU to find (optional, defaults to None)
         :type sku: str
         """
+        path = 'v4/organisations/%s/conversations?locale=%s&sku=%s' % (trkref, locale, sku)
         return
 
     def get_conversation_detail(self, trkref, conversation_id):
@@ -195,6 +221,7 @@ class ReevooAPI:
         :param conversation_id: The ID of the conversation to fetch
         :type conversation_id: str
         """
+        path = '/v4/conversations/%s?trkref=%s' % (conversation_id, trkref)
         return
 
     def set_conversation_create(self, trkref, conversation_data):
@@ -205,6 +232,7 @@ class ReevooAPI:
         :param conversation_data: The details for the question
         :type conversation_data: dict
         """
+        path = '/v4/organisations/%s/conversations' % (trkref, )
         return
 
     def set_conversation_upvote_question(self, trkref, question_id):
@@ -217,6 +245,7 @@ class ReevooAPI:
         :param question_id: The ID of the question
         :type question_id: str
         """
+        path = '/v4/conversations/%s/increment_helpful?trkref=%s' % (question_id, trkref)
         return
 
     def set_conversation_downvote_question(self, trkref, question_id):
@@ -229,6 +258,7 @@ class ReevooAPI:
         :param question_id: The ID of the question
         :type question_id: str
         """
+        path = '/v4/conversations/%s/increment_unhelpful?trkref=%s' % (question_id, trkref)
         return
 
     def set_conversation_upvote_answer(self, trkref, answer_id):
@@ -241,6 +271,7 @@ class ReevooAPI:
         :param answer_id: The ID of the answer
         :type answer_id: str
         """
+        path = '/v4/conversation_answers/%s/increment_helpful?trkref=%s' % (answer_id, trkref)
         return
 
     def set_conversation_downvote_answer(self, trkref, answer_id):
@@ -253,6 +284,7 @@ class ReevooAPI:
         :param answer_id: The ID of the answer
         :type answer_id: str
         """
+        path = '/v4/conversation_answers/%s/increment_unhelpful?trkref=%s' % (answer_id, trkref)
         return
 
     def set_customer_order_single_submission(self, trkref, customer_order_data):
@@ -264,6 +296,7 @@ class ReevooAPI:
         :param customer_order_data: The customer order data
         :type customer_order_data: dict
         """
+        path = '/v4/organisations/%s/customer_order' & (trkref, )
         return
 
     def set_customer_order_batch_submission(self, customer_order_batch_data):
@@ -273,6 +306,7 @@ class ReevooAPI:
         :param customer_order_batch_data: The customer order data
         :type customer_order_batch_data: dict
         """
+        path = '/v4/customer_orders'
         return
 
     def get_purchaser_detail(self, trkref, email):
@@ -283,6 +317,7 @@ class ReevooAPI:
         :param email: The email of the customer
         :type email: str
         """
+        path = '/v4/organisations/%s/purchasers/%s' % (trkref, email)
         return
 
     def set_purchaser_create(self, trkref, purchaser_data):
@@ -294,6 +329,7 @@ class ReevooAPI:
         :param purchaser_data: The purchaser data
         :type purchaser_data: dict
         """
+        path = '/v4/organisations/%s/purchasers' % (trkref, )
         return
 
     def set_purchaser_update(self, trkref, email, purchaser_data):
@@ -306,6 +342,7 @@ class ReevooAPI:
         :param purchaser_data: The purchaser data
         :type purchaser_data: dict
         """
+        path = '/v4/organisations/%s/purchasers/%s' % (trkref, email)
         return
 
     def get_purchaser_list(self, trkref, email):
@@ -316,6 +353,7 @@ class ReevooAPI:
         :param email: The email address of the purchaser
         :type email: str
         """
+        path = '/v4/organisations/%s/purchasers/%s/purchases' & (trkref, email)
         return
 
     def get_purchaser_match(self, trkref, email, purchases):
@@ -330,6 +368,7 @@ class ReevooAPI:
                             [{'order_ref': str, 'sku': str}, ...]
         :type purchases: list
         """
+        path = '/v4/organisations/%s/purchasers/%s/purchases/match' % (trkref, email)
         return
 
     def get_questionnaire_detail(self, trkref, email, sku, order_ref, first_name=None, redirect=False):
@@ -348,4 +387,23 @@ class ReevooAPI:
         :param redirect: Redirects to the questionnaire if True
         :type redirect: bool
         """
+        path = '/v4/organisations/%s/questionnaire?email=%s&sku=%s&order_ref=%s&first_name=%s&redirect=%r' % \
+               (trkref, email, sku, order_ref, first_name, redirect)
         return
+
+    def __dict_to_url_args(self, args):
+        """
+        Converts a dictionary to a string of GET arguments to be used in a URL
+        :param args: The dictionary of arguments
+        :type args: dict
+        """
+        url_args = ''
+        for key in args:
+            val = args[key]
+            url_args += val + '=' + str(key) + '&'
+        return url_args
+
+    def __make_request(self, path, method):
+        """
+        Make the request to the API
+        """
