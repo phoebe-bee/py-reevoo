@@ -24,7 +24,7 @@ Returns information for a specific organisation assigned to the given API key
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
 | `trkref` | mandatory | String |  |
-| `branch_code` | optional | String | `None` |
+| `branch_code` | optional | String | `''` |
 
 ### get_reviewable_list(self, trkref, branch_code, short_format, skus)
 
@@ -34,9 +34,9 @@ may request the reviewables (although short data contains only the SKU, review c
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
 | `trkref` | mandatory | String |  |
-| `branch_code` | optional | String | `None` |
+| `branch_code` | optional | String | `''` |
 | `short_format` | optional | Boolean | `False` |
-| `branch_code` | optional | String | `None` |
+| `branch_code` | optional | String | `''` |
 
 ### get_reviewable_detail(self, trkref, branch_code, locale, sku, short_format)
 
@@ -45,9 +45,9 @@ Return the details of a single reviewable
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
 | `trkref` | mandatory | String |  |
-| `branch_code` | optional | String | `None` |
-| `locale` | optional | String | `None` |
-| `sku` | optional | String | `None` |
+| `branch_code` | optional | String | `''` |
+| `locale` | optional | String | `''` |
+| `sku` | optional | String | `''` |
 | `short_format` | optional | Boolean | `False` |
 
 ### get_review_list(self, trkref, locale, branch_code, sku, region, page, per_page, automotive_options)
@@ -58,9 +58,9 @@ Returns a list of published reviews for an organisation.
 | --- | --- | --- | --- |
 | `trkref` | mandatory | String |  |
 | `locale` | mandatory | String |  |
-| `branch_code` | optional | String | `None` |
-| `sku` | optional | String | `None` |
-| `region` | optional (see Options > Region) | String | `None` |
+| `branch_code` | optional | String | `''` |
+| `sku` | optional | String | `''` |
+| `region` | optional (see Options > Region) | String | `''` |
 | `page` | optional | Integer | `1` |
 | `per_page` | optional (min 15, max 30) | Integer | `15` |
 | `automotive_options` | optional | dict | `None` |
@@ -79,7 +79,7 @@ Filter reviews by region by setting the `region` parameter to one of the followi
 
 ###### Automotive Options
 A dictionary to be used when an organisation has automotive reviewables. If the organisation does not need to use
-this options, leave the argument blank and it will default to `None`.
+these options, leave the argument blank and it will default to `None`.
 
 | Value | Requirement | Type | Examples |
 | --- | --- | --- | --- |
@@ -107,8 +107,8 @@ Get the details for a single review
 | --- | --- | --- | --- |
 | `trkref` | mandatory | String |  |
 | `review_id` | optional | String | `False` |
-| `branch_code` | optional | String | `None` |
-| `locale` | optional | String | `None` |
+| `branch_code` | optional | String | `''` |
+| `locale` | optional | String | `''` |
 
 ### set_review_upvote_review(self, review_id, trkref)
 
@@ -119,7 +119,7 @@ Make sure your code prevents this.
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
 | `review_id` | mandatory | String |  |
-| `trkref` | optional | String | `None` |
+| `trkref` | optional | String | `''` |
 
 ### set_review_downvote_review(self, review_id, trkref)
 
@@ -130,7 +130,7 @@ Make sure your code prevents this.
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
 | `review_id` | mandatory | String |  |
-| `trkref` | optional | String | `None` |
+| `trkref` | optional | String | `''` |
 
 ### get_customer_experience_review_list(self, trkref, branch_code, older_reviews)
 
@@ -139,8 +139,10 @@ Fetch a list of reviews for an organisation
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
 | `trkref` | mandatory | String |  |
-| `branch_code` | optional | String | `None` |
+| `branch_code` | optional | String | `''` |
 | `older_reviews` | optional | Boolean | `False` |
+| `page` | optional | Integer | `1` |
+| `per_page` | optional | Integer | `15` |
 
 ### get_customer_experience_review_detail(self, review_id, trkref, branch_code)
 
@@ -149,8 +151,8 @@ Fetch a single review by its ID
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
 | `review_id` | mandatory | String |  |
-| `trkref` | optional | String | `None` |
-| `branch_code` | optional | String | `None` |
+| `trkref` | optional | String | `''` |
+| `branch_code` | optional | String | `''` |
 
 ### get_conversation_list(self, trkref, locale, sku)
 
@@ -159,8 +161,8 @@ Returns a list of conversations associated with a certain product
 | Argument | Requirement | Type | Default |
 | --- | --- | --- | --- |
 | `trkref` | mandatory | String |  |
-| `locale` | optional | String | `None` |
-| `sku` | optional | String | `None` |
+| `locale` | optional | String | `''` |
+| `sku` | optional | String | `''` |
 
 ### get_conversation_detail(self, trkref, conversation_id)
 
@@ -369,5 +371,5 @@ Returns a questionnaire state or redirects to a questionnaire if redirect=True
 | `email` | mandatory | String |  |
 | `sku` | mandatory | String |  |
 | `order_ref` | mandatory | String |  |
-| `first_name` | optional | String | `None` |
-| `redirect` | optional | String | `None` |
+| `first_name` | optional | String | `''` |
+| `redirect` | optional | Boolean | `False` |
