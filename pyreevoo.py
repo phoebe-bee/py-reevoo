@@ -18,12 +18,12 @@ class ReevooAPI:
         :param api_secret:
         :type api_secret: str
         """
-        self.URI = 'https://api.reevoocloud.com'
-        self.api_key = api_key
-        self.api_secret = api_secret
+        self.__URI = 'https://api.reevoocloud.com'
+        self.__api_key = api_key
+        self.__api_secret = api_secret
 
         # create Auth object to attach to all requests made to the API
-        auth = HTTPBasicAuth(self.api_key, self.api_secret)
+        auth = HTTPBasicAuth(self.__api_key, self.__api_secret)
         self.session = requests.Session()
         self.session.auth = auth
 
@@ -33,8 +33,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations'
         response = self.__make_request(path, 'GET')
-        
-        return
+        return response
 
     def get_organisation_detail(self, trkref, branch_code=None):
         """
@@ -46,7 +45,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations/%s?branch_code=%s' % (trkref, branch_code)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def get_reviewable_list(self, trkref, branch_code=None, short_format=False, skus=None):
         """
@@ -67,7 +66,7 @@ class ReevooAPI:
         else:
             path = '/v4/organisations/%s/reviewables?branch_code=%s&skus=%s' % (trkref, branch_code, skus_string)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def get_reviewable_detail(self, trkref, branch_code=None, locale=None, sku=None, short_format=False):
         """
@@ -90,7 +89,7 @@ class ReevooAPI:
             path = '/v4/organisations/%s/reviewable?branch_code=%s&locale=%s&sku=%s' % \
                    (trkref, branch_code, locale, sku)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def get_review_list(self, trkref, locale, branch_code=None, sku=None, region=None, page=1, per_page=15,
                         automotive_options=None):
@@ -136,7 +135,7 @@ class ReevooAPI:
             path += '&'
             path += auto_str
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def get_review_detail(self, trkref, review_id, branch_code=None, locale=None):
         """
@@ -152,7 +151,7 @@ class ReevooAPI:
         """
         path = '/v4/reviews/%s?trkref=%s&branch_code=%s&locale=%s' % (review_id, trkref, branch_code, locale)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def set_review_upvote_review(self, review_id, trkref=None):
         """
@@ -166,7 +165,7 @@ class ReevooAPI:
         """
         path = '/v4/reviews/%s/increment_helpful?trkref=%s' % (review_id, trkref)
         response = self.__make_request(path, 'POST')
-        return
+        return response
 
     def set_review_downvote_review(self, review_id, trkref=None):
         """
@@ -180,9 +179,9 @@ class ReevooAPI:
         """
         path = '/v4/reviews/%s/increment_unhelpful?trkref=%s' % (review_id, trkref)
         response = self.__make_request(path, 'POST')
-        return
+        return response
 
-    def get_customer_experience_review_list(self, trkref, branch_code=None, older_reviews=False):
+    def get_customer_experience_review_list(self, trkref, branch_code=None, older_reviews=False, page=1, per_page=15):
         """
         Fetch a list of reviews for an organisation
         :param trkref: The three-character identifier for the organisation
@@ -192,11 +191,15 @@ class ReevooAPI:
         :param older_reviews: Retrieves all reviews if True, otherwise retrieves only reviews within a certain window
                                 (optional, defaults to False)
         :type older_reviews: bool
+        :param page: The page of paginated results to GET
+        :type page: int
+        :param per_page: The number of results to show per page (min 15, max 30)
+        :type per_page: int
         """
-        path = '/v4/organisations/%s/customer_experience_reviews?branch_code=%s&older_reviews=%r' % \
-               (trkref, branch_code, older_reviews)
+        path = '/v4/organisations/%s/customer_experience_reviews?branch_code=%s&older_reviews=%r&page=%d&per_page=%d' % \
+               (trkref, branch_code, older_reviews, page, per_page)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def get_customer_experience_review_detail(self, review_id, trkref=None, branch_code=None):
         """
@@ -210,7 +213,7 @@ class ReevooAPI:
         """
         path = '/v4/customer_experience_reviews/%s?trkref=%s&branch_code=%s' % (review_id, trkref, branch_code)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def get_conversation_list(self, trkref, locale=None, sku=None):
         """
@@ -224,7 +227,7 @@ class ReevooAPI:
         """
         path = 'v4/organisations/%s/conversations?locale=%s&sku=%s' % (trkref, locale, sku)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def get_conversation_detail(self, trkref, conversation_id):
         """
@@ -236,7 +239,7 @@ class ReevooAPI:
         """
         path = '/v4/conversations/%s?trkref=%s' % (conversation_id, trkref)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def set_conversation_create(self, trkref, conversation_data):
         """
@@ -248,7 +251,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations/%s/conversations' % (trkref, )
         response = self.__make_request(path, 'POST', conversation_data)
-        return
+        return response
 
     def set_conversation_upvote_question(self, trkref, question_id):
         """
@@ -262,7 +265,7 @@ class ReevooAPI:
         """
         path = '/v4/conversations/%s/increment_helpful?trkref=%s' % (question_id, trkref)
         response = self.__make_request(path, 'POST')
-        return
+        return response
 
     def set_conversation_downvote_question(self, trkref, question_id):
         """
@@ -276,7 +279,7 @@ class ReevooAPI:
         """
         path = '/v4/conversations/%s/increment_unhelpful?trkref=%s' % (question_id, trkref)
         response = self.__make_request(path, 'POST')
-        return
+        return response
 
     def set_conversation_upvote_answer(self, trkref, answer_id):
         """
@@ -290,7 +293,7 @@ class ReevooAPI:
         """
         path = '/v4/conversation_answers/%s/increment_helpful?trkref=%s' % (answer_id, trkref)
         response = self.__make_request(path, 'POST')
-        return
+        return response
 
     def set_conversation_downvote_answer(self, trkref, answer_id):
         """
@@ -304,7 +307,7 @@ class ReevooAPI:
         """
         path = '/v4/conversation_answers/%s/increment_unhelpful?trkref=%s' % (answer_id, trkref)
         response = self.__make_request(path, 'POST')
-        return
+        return response
 
     def set_customer_order_single_submission(self, trkref, customer_order_data):
         """
@@ -317,7 +320,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations/%s/customer_order' & (trkref, )
         response = self.__make_request(path, 'POST', customer_order_data)
-        return
+        return response
 
     def set_customer_order_batch_submission(self, customer_order_batch_data):
         """
@@ -328,7 +331,7 @@ class ReevooAPI:
         """
         path = '/v4/customer_orders'
         response = self.__make_request(path, 'POST', customer_order_batch_data)
-        return
+        return response
 
     def get_purchaser_detail(self, trkref, email):
         """
@@ -340,7 +343,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations/%s/purchasers/%s' % (trkref, email)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def set_purchaser_create(self, trkref, purchaser_data):
         """
@@ -353,7 +356,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations/%s/purchasers' % (trkref, )
         response = self.__make_request(path, 'POST', purchaser_data)
-        return
+        return response
 
     def set_purchaser_update(self, trkref, email, purchaser_data):
         """
@@ -367,7 +370,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations/%s/purchasers/%s' % (trkref, email)
         response = self.__make_request(path, 'POST', purchaser_data)
-        return
+        return response
 
     def get_purchaser_list(self, trkref, email):
         """
@@ -379,7 +382,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations/%s/purchasers/%s/purchases' & (trkref, email)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def get_purchaser_match(self, trkref, email, purchases):
         """
@@ -395,7 +398,7 @@ class ReevooAPI:
         """
         path = '/v4/organisations/%s/purchasers/%s/purchases/match' % (trkref, email)
         response = self.__make_request(path, 'POST', purchases)
-        return
+        return response
 
     def get_questionnaire_detail(self, trkref, email, sku, order_ref, first_name=None, redirect=False):
         """
@@ -416,7 +419,7 @@ class ReevooAPI:
         path = '/v4/organisations/%s/questionnaire?email=%s&sku=%s&order_ref=%s&first_name=%s&redirect=%r' % \
                (trkref, email, sku, order_ref, first_name, redirect)
         response = self.__make_request(path, 'GET')
-        return
+        return response
 
     def __dict_to_url_args(self, args):
         """
@@ -443,11 +446,11 @@ class ReevooAPI:
         """
         response = None
         if method == 'GET':
-            response = self.session.get(self.URI+path)
+            response = self.session.get(self.__URI + path)
         elif method == 'POST':
             if data:
                 json_data = json.dumps(data)
-                response = self.session.post(self.URI+path, json_data)
+                response = self.session.post(self.__URI + path, json_data)
             else:
-                response = self.session.post(self.URI+path)
+                response = self.session.post(self.__URI + path)
         return response
