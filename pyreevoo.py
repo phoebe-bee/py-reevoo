@@ -442,6 +442,20 @@ class ReevooAPI:
         response = self.__make_request(path, 'GET')
         return response
 
+    ################################################################################################################
+    ####                                           END OF API METHODS                                           ####
+    ################################################################################################################
+
+    def get_customer_experience_reviews_in_date_time_range(self, trkref, branch_code=''):
+        """
+        Returns a list of customer experience reviews from within a date time range.
+        :param trkref:
+        :type trkref: str
+        :param branch_code:
+        :type branch_code:
+        """
+        
+
     def __dict_to_url_args(self, args):
         """
         Converts a dictionary to a string of GET arguments to be used in a URL
