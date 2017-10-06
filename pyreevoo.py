@@ -446,15 +446,19 @@ class ReevooAPI:
     ####                                           END OF API METHODS                                           ####
     ################################################################################################################
 
-    def get_customer_experience_reviews_in_date_time_range(self, trkref, branch_code=''):
+    def get_customer_experience_reviews_in_date_time_range(self, start_date, end_date, trkref, branch_code=''):
         """
         Returns a list of customer experience reviews from within a date time range.
+        :param start_date:
+        :type start_date:
+        :param end_date:
+        :type end_date:
         :param trkref:
         :type trkref: str
         :param branch_code:
-        :type branch_code:
+        :type branch_code: str
         """
-        
+
 
     def __dict_to_url_args(self, args):
         """
