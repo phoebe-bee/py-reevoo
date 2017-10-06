@@ -211,8 +211,11 @@ class ReevooAPI:
         :param per_page: The number of results to show per page (min 15, max 30)
         :type per_page: int
         """
-        path = '/v4/organisations/%s/customer_experience_reviews?branch_code=%s&older_reviews=%r&page=%d&per_page=%d' % \
-               (trkref, branch_code, older_reviews, page, per_page)
+        older_reviews_str = 'false'
+        if older_reviews:
+            older_reviews_str = 'true'
+        path = '/v4/organisations/%s/customer_experience_reviews?branch_code=%s&older_reviews=%s&page=%d&per_page=%d' % \
+               (trkref, branch_code, older_reviews_str, page, per_page)
         response = self.__make_request(path, 'GET')
         return response
 
@@ -431,8 +434,11 @@ class ReevooAPI:
         :param redirect: Redirects to the questionnaire if True
         :type redirect: bool
         """
-        path = '/v4/organisations/%s/questionnaire?email=%s&sku=%s&order_ref=%s&first_name=%s&redirect=%r' % \
-               (trkref, email, sku, order_ref, first_name, redirect)
+        redirect_str = 'false'
+        if redirect:
+            redirect_str = 'true'
+        path = '/v4/organisations/%s/questionnaire?email=%s&sku=%s&order_ref=%s&first_name=%s&redirect=%s' % \
+               (trkref, email, sku, order_ref, first_name, redirect_str)
         response = self.__make_request(path, 'GET')
         return response
 
