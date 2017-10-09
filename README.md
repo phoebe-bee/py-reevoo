@@ -373,3 +373,22 @@ Returns a questionnaire state or redirects to a questionnaire if redirect=True
 | `order_ref` | mandatory | String |  |
 | `first_name` | optional | String | `''` |
 | `redirect` | optional | Boolean | `False` |
+
+### get_customer_experience_review_list_in_date_range(self, trkref, branch_code, date_type, start_date, end_date, include_start_date, include_end_date)
+
+Returns a list of customer experience reviews from within a date range.
+
+Experimental - this is not a function supported by the API, so may be a bit heavy in terms of processing in your application.
+Must provide at least one of `start_date` and `end_date` otherwise an error message will be returned.
+
+`publish_date` should be one of the following: `'publish_date`, `'delivery_date`, `'purchase_date`.
+
+| Argument | Requirement | Type | Default |
+| --- | --- | --- | --- |
+| `trkref` | mandatory | String |  |
+| `branch_code` | optional | String | `''` |
+| `date_type` | optional | String | `'publish_date'` |
+| `start_date` | optional | String | `None |
+| `end_date` | optional | String | `None` |
+| `include_start_date` | optional | Boolean | `True` |
+| `include_end_date` | optional | Boolean | `True` |
