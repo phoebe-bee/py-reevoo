@@ -235,3 +235,14 @@ class Test(unittest.TestCase):
         self.assertEqual(response.status_code, 200,
                          'test_set_conversation_downvote_answer failed - Response code %d, %s'
                          % (response.status_code, response.reason))
+
+    def test_get_customer_experience_review_list_in_date_range_no_dates(self):
+        reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
+        response = reevoo.get_customer_experience_review_list_in_date_range(environ.get('TRKREF'))
+        self.assertEqual(response, "Please provide at least one of: start_date, end_date. Otherwise use get_customer_experience_review_list()")
+
+    def test_get_customer_experience_review_list_in_date_range(self):
+        reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
+        list_in_date_range = reevoo.get_customer_experience_review_list_in_date_range(environ.get('TRKREF'),
+                                                                            start_date='2016-01-01', end_date='2017-03-31')
+        self.assertIs(list, list_in_date_range)

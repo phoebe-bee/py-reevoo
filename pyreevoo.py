@@ -1,6 +1,8 @@
 import json
 import requests
+from operator import itemgetter
 from requests.auth import HTTPBasicAuth
+from datetime import date, datetime, timedelta
 
 
 class ReevooAPI:
@@ -13,7 +15,7 @@ class ReevooAPI:
     def __init__(self, api_key=None, api_secret=None):
         """
         Set the API URI (constant) and set the credentials to query the API
-        :param api_key:
+        :param api_key:time
         :type api_key: str
         :param api_secret:
         :type api_secret: str
@@ -146,7 +148,7 @@ class ReevooAPI:
         path = '/v4/organisations/%s/reviews?locale=%s&branch_code=%s&sku=%s&region=%s&page=%s&per_page=%s' % \
                (trkref, locale, branch_code, sku, region, page, per_page)
         if automotive_options:
-            auto_str = self.__dict_to_url_args(automotive_options)
+            auto_str = dict_to_url_args(automotive_options)
             path += '&'
             path += auto_str
         response = self.__make_request(path, 'GET')
@@ -267,7 +269,7 @@ class ReevooAPI:
         :param conversation_data: The details for the question
         :type conversation_data: dict
         """
-        path = '/v4/organisations/%s/conversations' % (trkref, )
+        path = '/v4/organisations/%s/conversations' % (trkref,)
         response = self.__make_request(path, 'POST', conversation_data)
         return response
 
@@ -336,7 +338,7 @@ class ReevooAPI:
         :param customer_order_data: The customer order data
         :type customer_order_data: dict
         """
-        path = '/v4/organisations/%s/customer_order' % (trkref, )
+        path = '/v4/organisations/%s/customer_order' % (trkref,)
         response = self.__make_request(path, 'POST', customer_order_data)
         return response
 
@@ -372,7 +374,7 @@ class ReevooAPI:
         :param purchaser_data: The purchaser data
         :type purchaser_data: dict
         """
-        path = '/v4/organisations/%s/purchasers' % (trkref, )
+        path = '/v4/organisations/%s/purchasers' % (trkref,)
         response = self.__make_request(path, 'POST', purchaser_data)
         return response
 
@@ -446,31 +448,75 @@ class ReevooAPI:
     ####                                           END OF API METHODS                                           ####
     ################################################################################################################
 
-    def get_customer_experience_reviews_in_date_time_range(self, start_date, end_date, trkref, branch_code=''):
+    def get_customer_experience_review_list_in_date_range(self, trkref, branch_code='', date_type='publish_date',
+                                                          start_date=None, end_date=None):
         """
-        Returns a list of customer experience reviews from within a date time range.
-        :param start_date:
-        :type start_date:
-        :param end_date:
-        :type end_date:
+        EXPERIMENTAL - Returns a list of customer experience reviews from within a date time range. API does not support
+        this, so depending on the size of the date range might be a bit heavy in terms of processing.
+        Must provide start_date, end_date, or both, otherwise an error string will be returned instead of a list
         :param trkref:
         :type trkref: str
         :param branch_code:
         :type branch_code: str
+        :param date_type: 'publish_date' | 'delivery_date' | 'purchase_date'
+        :type date_type: str
+        :param start_date: date string formatted YYYY-MM-DD
+        :type start_date: str
+        :param end_date: date string formatted YYYY-MM-DD
+        :type end_date: str
         """
 
+        # find the number of pages in total
+        page_one = self.get_customer_experience_review_list(trkref, branch_code, older_reviews=True, page=1,
+                                                            per_page=30)
+        content = json.loads(page_one.text.replace('\r\n', ''))
+        number_of_pages = content['summary']['pagination']['total_pages']
 
-    def __dict_to_url_args(self, args):
-        """
-        Converts a dictionary to a string of GET arguments to be used in a URL
-        :param args: The dictionary of arguments
-        :type args: dict
-        """
-        url_args = ''
-        for key in args:
-            val = args[key]
-            url_args += val + '=' + str(key) + '&'
-        return url_args
+        if start_date is None and end_date is None:
+            return "Please provide at least one of: start_date, end_date. Otherwise use get_customer_experience_review_list()"
+        else:
+            list_of_all_reviews_in_date = []
+            if start_date:
+                start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            if end_date:
+                end_date = datetime.strptime(end_date, '%Y-%m-%d')
+            if (start_date and end_date) or end_date:
+                # Go through pages from beginning, add reviews within date to list, then return
+                current_page = 1
+                while current_page <= number_of_pages:
+                    page = self.get_customer_experience_review_list(trkref, branch_code, older_reviews=True,
+                                                                    page=current_page, per_page=30)
+                    customer_experience_reviews = json.loads(page.text.replace('\r\n', ''))['customer_experience_reviews']
+                    reviews_in_date_from_page = get_items_in_date_range(customer_experience_reviews, date_type, start_date,
+                                                                        end_date,)
+                    list_of_all_reviews_in_date += reviews_in_date_from_page
+                    if len(reviews_in_date_from_page) < 30:
+                        # original request returns 30 reviews per page so if reviews_from_page has fewer than that, then
+                        # it has reached the end of the list of reviews in date and has therefore finished processing
+                        return list_of_all_reviews_in_date
+                    else:
+                        current_page += 1
+            elif start_date:
+                # Go through pages from end, add reviews within date to list, sort, then return
+                current_page = number_of_pages
+                while current_page >= 1:
+                    page = self.get_customer_experience_review_list(trkref, branch_code, older_reviews=True,
+                                                                    page=current_page, per_page=30)
+                    customer_experience_reviews = json.loads(page.text.replace('\r\n', ''))[
+                        'customer_experience_reviews']
+                    reviews_in_date_from_page = get_items_in_date_range(customer_experience_reviews, date_type,
+                                                                        start_date, end_date)
+                    list_of_all_reviews_in_date += reviews_in_date_from_page
+                    if len(reviews_in_date_from_page) < 30:
+                        # original request returns 30 reviews per page so if reviews_from_page has fewer than that, then
+                        # it has reached the end of the list of reviews in date and has therefore finished processing
+                        list_of_all_reviews_in_date = sorted(list_of_all_reviews_in_date,
+                                                             key=itemgetter('publish_date'))
+                        return list_of_all_reviews_in_date
+                    else:
+                        current_page -= 1
+                pass
+            return list_of_all_reviews_in_date
 
     def __make_request(self, path, method, data=None):
         """
@@ -493,3 +539,53 @@ class ReevooAPI:
             else:
                 response = self.session.post(uri_and_path)
         return response
+
+
+def dict_to_url_args(args):
+    """
+    Converts a dictionary to a string of GET arguments to be used in a URL
+    :param args: The dictionary of arguments
+    :type args: dict
+    """
+    url_args = ''
+    for key in args:
+        val = args[key]
+        url_args += val + '=' + str(key) + '&'
+    return url_args
+
+
+def get_items_in_date_range(list_of_items, publish_or_delivery, start_date=None, end_date=None,
+                            start_date_include=True, end_date_include=True):
+    """
+    Checks a page of results and returns a list of those that are within a date range
+    :param list_of_items: The list of items to check the dates for
+    :type list_of_items: list
+    :param publish_or_delivery: retrieve either the publish or the delivery date: 'publish_date' | 'delivery_date'
+    :type publish_or_delivery: str
+    :param start_date:
+    :type start_date: datetime
+    :param end_date:
+    :type end_date: datetime
+    :param start_date_include:
+    :type start_date_include: bool
+    :param end_date_include:
+    :type end_date_include: bool
+    """
+    list_of_items_in_date = []
+
+    if start_date_include and start_date:
+        start_date = start_date - timedelta(days=1)
+    elif start_date is None:
+        start_date = date.min
+
+    if end_date_include and end_date:
+        end_date = end_date - timedelta(days=1)
+    elif end_date is None:
+        end_date = date.max
+
+    for item in list_of_items:
+        item_date = datetime.strptime(item[publish_or_delivery], '%Y-%m-%d')
+        if start_date < item_date < end_date:
+            list_of_items_in_date.append(item)
+
+    return list_of_items_in_date
