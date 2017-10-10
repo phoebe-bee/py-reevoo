@@ -347,7 +347,7 @@ class ReevooAPI:
         Submit a batch of customer order details as a JSON list. See Reevoo documentation for fields to include -
         http://reevoo.github.io/docs/reevooapi/customer-order/customer-order-batch-submission/
         :param customer_order_batch_data: The customer order data
-        :type customer_order_batch_data: dict
+        :type customer_order_batch_data: list
         """
         path = '/v4/customer_orders'
         response = self.__make_request(path, 'POST', customer_order_batch_data)
