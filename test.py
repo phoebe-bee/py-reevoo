@@ -26,22 +26,25 @@ class Test(unittest.TestCase):
         """
         Test the function that verifies the API keys works. Should return True if valid API keys are provided.
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         api_keys_valid = reevoo.verify_api_keys()
         self.assertEqual(api_keys_valid, True)
 
     def test_verify_wrong_api_keys(self):
         """
-        Test the function that verifies the API keys works. Uses invalid API keys and should return False.
+        Test the function that verifies the API keys works. Uses invalid API keys. Should return False.
         """
+        self.shortDescription()
         reevoo = ReevooAPI('QWERTYUIOP', 'ASDFGHJKL')
         api_keys_valid = reevoo.verify_api_keys()
         self.assertEqual(api_keys_valid, False)
 
     def test_get_organisation_list(self):
         """
-        
+        Test the function that gets a list of organisations associated with a TRKREF. Should return response code 200.
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_organisation_list()
         self.assertEqual(response.status_code, 200, 'test_get_organisation_list failed - Response code %d, %s'
@@ -49,8 +52,9 @@ class Test(unittest.TestCase):
 
     def test_get_organisation_detail(self):
         """
-
+        Test the function that gets detailed info of an organisation from a TRKREF. Should return response code 200.
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_organisation_detail(environ.get('TRKREF'))
         self.assertEqual(response.status_code, 200, 'test_get_organisation_detail failed - Response code %d, %s'
@@ -58,8 +62,9 @@ class Test(unittest.TestCase):
 
     def test_get_reviewable_list(self):
         """
-
+        Test the function that gets a list of reviewables (products). Should return status code 200.
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_reviewable_list(environ.get('TRKREF'))
         self.assertEqual(response.status_code, 200, 'test_get_reviewable_list failed - Response code %d, %s'
@@ -67,8 +72,9 @@ class Test(unittest.TestCase):
 
     def test_get_reviewable_list_short_format(self):
         """
-
+        Test the function that gets a list of reviewables (products). Should return status code 200.
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_reviewable_list(environ.get('TRKREF'), short_format=True)
         content = json.loads(response.content)
@@ -78,17 +84,19 @@ class Test(unittest.TestCase):
 
     def test_get_reviewable_detail(self):
         """
-
+        Test the function that gets the detailed information for a reviewable (product). Should return status code 200.
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
-        response = reevoo.get_reviewable_detail(environ.get('TRKREF'))
+        response = reevoo.get_reviewable_detail(environ.get('TRKREF'), environ.get('SKU'))
         self.assertEqual(response.status_code, 200, 'test_get_reviewable_detail failed - Response code %d, %s'
                          % (response.status_code, response.reason))
 
     def test_get_reviewable_detail_short_format(self):
         """
-
+        Test the function that gets the detailed information for a reviewable (product). Should return status code 200.
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_reviewable_detail(environ.get('TRKREF'), environ.get('SKU'), short_format=True)
         self.assertEqual(response.status_code, 200,
@@ -97,17 +105,19 @@ class Test(unittest.TestCase):
 
     def test_get_review_list(self):
         """
-
+        Test the function that gets the list of reviews for a TRKREF. Should return status code 200.
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
-        response = reevoo.get_review_list(environ.get('TRKREF'), environ.get('LOCALE'))
+        response = reevoo.get_review_list(environ.get('TRKREF'), environ.get('LOCALE'), sku=environ.get('SKU'))
         self.assertEqual(response.status_code, 200, 'test_get_review_list failed - Response code %d, %s'
                          % (response.status_code, response.reason))
 
     def test_get_review_detail(self):
         """
-
+        Test the function that gets the
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_review_detail(environ.get('TRKREF'), environ.get('LOCALE'))
         self.assertEqual(response.status_code, 200, 'test_get_review_detail failed - Response code %d, %s'
@@ -117,6 +127,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.set_review_upvote_review(environ.get('REVIEW_ID'), environ.get('TRKREF'))
         self.assertEqual(response.status_code, 202, 'test_set_review_upvote_review failed - Response code %d, %s'
@@ -126,6 +137,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.set_review_downvote_review(environ.get('REVIEW_ID'), environ.get('TRKREF'))
         self.assertEqual(response.status_code, 202, 'test_set_review_downvote_review failed - Response code %d, %s'
@@ -135,6 +147,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_customer_experience_review_list(environ.get('TRKREF'))
         self.assertEqual(response.status_code, 200,
@@ -145,6 +158,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_customer_experience_review_detail(environ.get('REVIEW_ID'))
         self.assertEqual(response.status_code, 200,
@@ -155,6 +169,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_conversation_list(environ.get('TRKREF'))
         self.assertEqual(response.status_code, 200,
@@ -165,6 +180,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_conversation_detail(environ.get('TRKREF'), environ.get('CONVERSATION_ID'))
         self.assertEqual(response.status_code, 200,
@@ -175,6 +191,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         dummy_conversation = {
             'sku': '00001',
             'first_name': 'Clark',
@@ -191,6 +208,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.set_conversation_upvote_question(environ.get('TRKREF'), environ.get('QUESTION_ID'))
         self.assertEqual(response.status_code, 202,
@@ -201,6 +219,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.set_conversation_downvote_question(environ.get('TRKREF'), environ.get('QUESTION_ID'))
         self.assertEqual(response.status_code, 202,
@@ -211,6 +230,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.set_conversation_upvote_answer(environ.get('TRKREF'), environ.get('ANSWER_ID'))
         self.assertEqual(response.status_code, 202,
@@ -221,6 +241,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.set_conversation_downvote_answer(environ.get('TRKREF'), environ.get('ANSWER_ID'))
         self.assertEqual(response.status_code, 202,
@@ -231,6 +252,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         dummy_order = {
 
         }
@@ -244,6 +266,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         dummy_order_batch = [
 
         ]
@@ -257,6 +280,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_purchaser_detail(environ.get('TRKREF'), environ.get('EMAIL'))
         self.assertEqual(response.status_code, 200,
@@ -267,6 +291,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         purchaser_data = {
 
         }
@@ -280,6 +305,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         purchaser_data = {
 
         }
@@ -293,6 +319,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_purchaser_list(environ.get('TRKREF'), environ.get('EMAIL'))
         self.assertEqual(response.status_code, 200,
@@ -303,6 +330,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         purchases = [
 
         ]
@@ -316,6 +344,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_questionnaire_detail(environ.get('TRKREF'), environ.get('EMAIL'), environ.get('SKU'),
                                                    environ.get('ORDER_REF'))
@@ -327,6 +356,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         response = reevoo.get_customer_experience_review_list_in_date_range(environ.get('TRKREF'))
         self.assertEqual(response, "Please provide at least one of: start_date, end_date. Otherwise use get_customer_experience_review_list()")
@@ -335,6 +365,7 @@ class Test(unittest.TestCase):
         """
 
         """
+        self.shortDescription()
         reevoo = ReevooAPI(environ.get('API_KEY'), environ.get('API_SECRET'))
         list_in_date_range = reevoo.get_customer_experience_review_list_in_date_range(environ.get('TRKREF'),
                                                                             start_date='2016-01-01', end_date='2017-03-31')
