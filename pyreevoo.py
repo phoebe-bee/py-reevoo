@@ -480,7 +480,7 @@ class ReevooAPI:
                 start_date = datetime.strptime(start_date, '%Y-%m-%d')
             if end_date:
                 end_date = datetime.strptime(end_date, '%Y-%m-%d')
-            if (start_date and end_date) or end_date:
+            if (start_date and end_date) or start_date:
                 # Go through pages from beginning, add reviews within date to list, then return
                 current_page = 1
                 while current_page <= number_of_pages:
@@ -488,7 +488,7 @@ class ReevooAPI:
                                                                     page=current_page, per_page=30)
                     customer_experience_reviews = json.loads(page.text.replace('\r\n', ''))['customer_experience_reviews']
                     reviews_in_date_from_page = get_items_in_date_range(customer_experience_reviews, date_type, start_date,
-                                                                        end_date,)
+                                                                        end_date)
                     list_of_all_reviews_in_date += reviews_in_date_from_page
                     if len(reviews_in_date_from_page) < 30:
                         # original request returns 30 reviews per page so if reviews_from_page has fewer than that, then
@@ -496,7 +496,7 @@ class ReevooAPI:
                         return list_of_all_reviews_in_date
                     else:
                         current_page += 1
-            elif start_date:
+            elif end_date:
                 # Go through pages from end, add reviews within date to list, sort, then return
                 current_page = number_of_pages
                 while current_page >= 1:
